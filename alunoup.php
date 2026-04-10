@@ -1,65 +1,73 @@
 <html>
 <head>
-<title>Alteração de Dados</title>
-<?php include ('config.php'); ?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Alteração de Dados</title>
+    <?php include('config.php'); ?>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
 <body>
-<form action="alunoup.php?botao=gravar" method="post" name="form1">
-<table width="95%" border="1" align="center">
-  <tr>
-    <td colspan="5" align="center">Alteração de Dados</td>
-  </tr>
-  <tr>
-    <td width="18%" align="right">matricula</td>
-    <td width="26%"><input type="number" name="matricula" /></td>
-    <td width="18%" align="right">Nome:</td>
-    <td width="26%"><input type="text" name="nome" /></td>
-    <td width="18%" align="right">mensalidade</td>
-    <td width="26%"><input type="number" name="cpf" /></td>
-    <td width="18%" align="right">Nota1</td>
-    <td width="26%"><input type="number" name="nota_1" /></td>
-    <td width="18%" align="right">Nota2</td>
-    <td width="26%"><input type="number" name="nota_2" /></td>
-    <td width="21%"><input type="submit" name="botao" value="Alterar" /></td>
-  </tr>
-</table>
+
+<form action="" method="post" name="form1">
+    <table width="95%" border="1" align="center">
+        <tr>
+            <td colspan="10" align="center">Alteração de Dados</td>
+        </tr>
+        <tr>
+            <td align="right">Matrícula</td>
+            <td><input type="number" name="matricula" required /></td>
+
+            <td align="right">Nome</td>
+            <td><input type="text" name="nome" /></td>
+
+            <td align="right">Mensalidade</td>
+            <td><input type="number" step="0.01" name="mensalidade" /></td>
+
+            <td align="right">Nota 1</td>
+            <td><input type="number" step="0.01" name="nota1" /></td>
+
+            <td align="right">Nota 2</td>
+            <td><input type="number" step="0.01" name="nota2" /></td>
+        </tr>
+        <tr>
+            <td colspan="10" align="right">
+                <input type="submit" name="botao" value="Alterar" />
+            </td>
+        </tr>
+    </table>
 </form>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['botao']) && $_POST['botao'] == "Alterar") {
+    
     $matricula = intval($_POST['matricula']);
-    $cpf = intval($_POST['mensalidade']);
     $nome = mysqli_real_escape_string($mysqli, $_POST['nome']);
-    $nota_1 = intval ($_POST['nota1']);
-    $nota_2 = intval ($_POST['nota2']);
-    // Validação básica
+    $mensalidade = $_POST['mensalidade'];
+    $nota1 = $_POST['nota1'];
+    $nota2 = $_POST['nota2'];
+
     if ($matricula > 0) {
-        // Atualiza a idade se for fornecida
-        if ($mensalidade > 0) {
-            mysqli_query($mysqli, "UPDATE RA2025106253 SET mensalidade='$mensalidade' WHERE matricula='$matricula'");
-        }
-
-        if ($nota_1 > 0) {
-            mysqli_query($mysqli, "UPDATE RA2025106253 SET nota1='$nota1' WHERE matricula='$matricula'");
-        }
-
-        if ($nota_2 > 0) {
-            mysqli_query($mysqli, "UPDATE RA225106253 SET nota2='$nota2' WHERE matricula='$matricula'");
-        }
-
-        // Atualiza o nome se for fornecido
-        if (!empty($nome)) {
-            mysqli_query($mysqli, "UPDATE RA225106253 SET nome='$nome' WHERE matricula='$matricula'");
-        }
-
         
+        if (!empty($nome)) {
+            mysqli_query($mysqli, "UPDATE aluno SET nome='$nome' WHERE matricula='$matricula'");
+        }
 
-        // Fecha a conexão com o banco de dados
+        if ($mensalidade !== "") {
+            mysqli_query($mysqli, "UPDATE aluno SET mensalidade='$mensalidade' WHERE matricula='$matricula'");
+        }
+
+        if ($nota1 !== "") {
+            mysqli_query($mysqli, "UPDATE aluno SET nota1='$nota1' WHERE matricula='$matricula'");
+        }
+
+        if ($nota2 !== "") {
+            mysqli_query($mysqli, "UPDATE aluno SET nota2='$nota2' WHERE matricula='$matricula'");
+        }
+
+        echo "<p>Dados alterados com sucesso!</p>";
+
         mysqli_close($mysqli);
     } else {
-        echo "ID inválido.";
+        echo "<p>Matrícula inválida.</p>";
     }
 }
 ?>

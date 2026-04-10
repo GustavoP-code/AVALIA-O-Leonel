@@ -1,0 +1,8 @@
+CREATE TABLE aluno (
+    matricula INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    nota1 DECIMAL(4,2) NOT NULL,
+    nota2 DECIMAL(4,2) NOT NULL,
+    mensalidade DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (matricula)
+);
